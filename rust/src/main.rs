@@ -10,6 +10,7 @@ use deep_space::Contact;
 use std::{env, time::Duration};
 
 fn main() {
+    println!("hellos");
     let denom: String = "footoken".into();
     let vitaliks_eth_address =
         EthAddress::parse_and_validate("0xAb5801a7D398351b8bE11C439e05C5B3259aeC9B").unwrap();

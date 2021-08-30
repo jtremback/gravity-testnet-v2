@@ -3,4 +3,4 @@ gravity
 
 # Added by cargo
 
-/target
+rust/target
