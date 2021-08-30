@@ -6,3 +6,7 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+cosmos_gravity = { path = "./cosmos-gravity-bridge/orchestrator/cosmos_gravity" }
+# test_runner = { path = "./cosmos-gravity-bridge/orchestrator/test_runner" }
+clarity = "0.4"
+deep_space = "2.4"
