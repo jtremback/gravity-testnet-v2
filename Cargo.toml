@@ -10,3 +10,4 @@ cosmos_gravity = { path = "./cosmos-gravity-bridge/orchestrator/cosmos_gravity" 
 # test_runner = { path = "./cosmos-gravity-bridge/orchestrator/test_runner" }
 clarity = "0.4"
 deep_space = "2.4"
+async-std = "1.10.0"
