@@ -5,6 +5,8 @@ RUN dnf install -y git make gcc gcc-c++ which iproute iputils procps-ng vim-mini
 
 # Copy in the repo under test
 ADD ./cosmos-gravity-bridge /cosmos-gravity-bridge
+
+# Build the Go module
 RUN pushd /cosmos-gravity-bridge/module/ && PATH=$PATH:/usr/local/go/bin GOPROXY=https://proxy.golang.org make && PATH=$PATH:/usr/local/go/bin make install
 
 # This step just downloads and caches the deps and gets past a long "Updating crates.io index" step

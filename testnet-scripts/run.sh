@@ -10,7 +10,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 /bin/bash "$DIR/setup-validators.sh" "$NODES"
 /bin/bash "$DIR/start-validators.sh" "$NODES"
 
-pushd /rust/ && cargo run
+pushd /rust/ && cargo run || true
 
 # This keeps the script open to prevent Docker from stopping the container
 # immediately if the nodes are killed by a different process
