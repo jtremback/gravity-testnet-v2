@@ -11,7 +11,7 @@ RUN pushd /cosmos-gravity-bridge/module/ && PATH=$PATH:/usr/local/go/bin GOPROXY
 
 # This step just downloads and caches the deps and gets past a long "Updating crates.io index" step
 COPY ./rust/Cargo.toml /rust/Cargo.toml
-COPY ./fake-main.rs /rust/src/main.rs
+COPY ./rust/fake-main.rs /rust/src/main.rs
 RUN pushd /rust/ && cargo fetch
 
 # Actually build the rust code

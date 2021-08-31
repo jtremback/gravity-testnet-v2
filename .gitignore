@@ -4,3 +4,5 @@ gravity
 # Added by cargo
 
 rust/target
+tla/states
+tla/*.out
