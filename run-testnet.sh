@@ -4,7 +4,7 @@ set -eux
 NODES=3
 
 # Build the Docker container
-docker build -t gravity-base .
+docker build --build-arg NODES=$NODES -t gravity-base .
 
 # Remove existing container instance
 set +e

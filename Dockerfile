@@ -11,3 +11,7 @@ RUN pushd /cosmos-gravity-bridge/module/ && PATH=$PATH:/usr/local/go/bin GOPROXY
 
 # Copy in the shell scripts that run the testnet
 ADD ./testnet-scripts /testnet-scripts
+
+ARG NODES
+# Set up the gentxs etc
+RUN /bin/bash "/testnet-scripts/setup-validators.sh" $NODES

@@ -7,7 +7,6 @@ NODES=$1
 # this directy of this script
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-/bin/bash "$DIR/setup-validators.sh" "$NODES"
 /bin/bash "$DIR/start-validators.sh" "$NODES"
 
 # This keeps the script open to prevent Docker from stopping the container
