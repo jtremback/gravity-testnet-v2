@@ -9,14 +9,5 @@ ADD ./cosmos-gravity-bridge /cosmos-gravity-bridge
 # Build the Go module
 RUN pushd /cosmos-gravity-bridge/module/ && PATH=$PATH:/usr/local/go/bin GOPROXY=https://proxy.golang.org make && PATH=$PATH:/usr/local/go/bin make install
 
-# This step just downloads and caches the deps and gets past a long "Updating crates.io index" step
-COPY ./rust/Cargo.toml /rust/Cargo.toml
-COPY ./rust/fake-main.rs /rust/src/main.rs
-RUN pushd /rust/ && cargo fetch
-
-# Actually build the rust code
-ADD ./rust/ /rust
-RUN pushd /rust/ && cargo build
-
 # Copy in the shell scripts that run the testnet
 ADD ./testnet-scripts /testnet-scripts

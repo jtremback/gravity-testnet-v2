@@ -25,7 +25,7 @@ pub struct ValidatorKeys {
 /// and dumped into a file /validator-eth-keys in the container, from there they are then used by
 /// the orchestrator on startup
 pub fn parse_ethereum_keys() -> Vec<EthPrivateKey> {
-    let filename = "/validator-eth-keys";
+    let filename = "../docker/validator-eth-keys";
     let file = File::open(filename).expect("Failed to find eth keys");
     let reader = BufReader::new(file);
     let mut ret = Vec::new();
@@ -69,7 +69,7 @@ fn parse_phrases(filename: &str) -> Vec<CosmosPrivateKey> {
 /// and so on. While validators may later fail to start it is guaranteed
 /// that we have one key for each validator in this file.
 pub fn parse_validator_keys() -> Vec<CosmosPrivateKey> {
-    let filename = "/validator-phrases";
+    let filename = "../docker/validator-phrases";
     parse_phrases(filename)
 }
 
@@ -77,7 +77,7 @@ pub fn parse_validator_keys() -> Vec<CosmosPrivateKey> {
 /// command just like the validator keys themselves and stored in a
 /// similar file /orchestrator-phrases
 pub fn parse_orchestrator_keys() -> Vec<CosmosPrivateKey> {
-    let filename = "/orchestrator-phrases";
+    let filename = "../docker/orchestrator-phrases";
     parse_phrases(filename)
 }
 
