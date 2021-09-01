@@ -1,4 +1,6 @@
-// use crate::{utils::ValidatorKeys, COSMOS_NODE_ABCI};
+// THIS FILE WAS COPY & PASTED from the cosmos-gravity-bridge repo because it appeared in a
+// binary crate which was not possible to import from.
+
 use clarity::Address as EthAddress;
 use clarity::PrivateKey as EthPrivateKey;
 use deep_space::private_key::PrivateKey as CosmosPrivateKey;
