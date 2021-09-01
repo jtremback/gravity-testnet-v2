@@ -1,7 +1,7 @@
 mod utils;
 
 use crate::utils::*;
-use anyhow::{anyhow, Result};
+use anyhow::Result;
 use async_std::task::block_on;
 use clarity::Address as EthAddress;
 use cosmos_gravity::send::send_to_eth;
@@ -9,10 +9,8 @@ use cosmos_gravity::utils::wait_for_cosmos_online;
 use deep_space::coin::Coin;
 use deep_space::Address as CosmosAddress;
 use deep_space::Contact as DeepSpaceContact;
-use modelator::ModelatorRuntime;
 use modelator::StepRunner;
 use serde::{Deserialize, Serialize};
-use serde_json;
 use std::fmt;
 use std::ops::Deref;
 use std::time::Duration;
