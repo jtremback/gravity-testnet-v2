@@ -3,7 +3,8 @@
 EXTENDS GravityMBT
 
 SentToEthereumTest ==
-    /\ action.actionType = "SendToEthereum"
+    /\  erc20Deployed = TRUE
+    /\  action.actionType = "SendToEthereum"
 
 Neg == ~SentToEthereumTest
 

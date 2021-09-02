@@ -82,24 +82,24 @@ impl StepRunner<Step> for TestRunner {
                 // keys array is 0-indexed, everything else is 1-indexed
                 let validator_key = self.keys[action.validator - 1].validator_key;
 
-                block_on(send_to_eth(
+                dbg!(block_on(send_to_eth(
                     validator_key,
                     vitaliks_eth_address,
                     Coin {
                         denom: denom.clone(),
-                        amount: 1_000_000u64.into(),
+                        amount: 1000u64.into(),
                     },
                     Coin {
                         denom: denom.clone(),
-                        amount: 1u64.into(),
+                        amount: 2u64.into(),
                     },
                     Coin {
                         denom: denom.clone(),
-                        amount: 1u64.into(),
+                        amount: 3u64.into(),
                     },
                     &self.contact,
                 ))
-                .unwrap();
+                .unwrap());
 
                 Ok(())
             }

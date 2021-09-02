@@ -14,20 +14,33 @@ in order to test the Gravity Cosmos Module:
 EXTENDS Integers
 
 CONSTANTS
-    \* @type: Set(Int)
+    \* @type: Int -> Int
     validators
 
 VARIABLES
-    \* @type: [ actionType: Str, validator: Int, sendAmount: Int ]
-    action
+    (* @type: [
+        actionType: Str,
+        SendToEthereum: [ flag: Int, validator: Int, sendAmount: Int ]
+    ]*)
+    action,
+    \* @type: Bool
+    erc20Deployed
 
 Init ==
-    action = [ actionType |-> "Init" ]
+    /\  action = [ actionType |-> "Init" ]
+    /\  erc20Deployed = FALSE
 
 SendToEthereum ==
-    \E v \in validators:
-        action' = [ actionType |-> "SendToEthereum", validator |-> v, sendAmount |-> 1 ]
+    /\  erc20Deployed = TRUE
+    /\  \E v \in validators:
+            action' = [ actionType |-> "SendToEthereum", SendToEthereum |-> [ validator |-> v, sendAmount |-> 1 ] ]
+    /\  UNCHANGED <<erc20Deployed>>
+
+DeployERC20 ==
+    /\  erc20Deployed' = TRUE
+    /\  action' = [  actionType |-> "Erc20DeployedEvent" ]
 
 Next ==
-    SendToEthereum
+    \/  SendToEthereum
+    \/  DeployERC20
 ===============================================================================
