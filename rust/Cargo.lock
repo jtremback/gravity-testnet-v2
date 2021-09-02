@@ -997,6 +997,7 @@ dependencies = [
  "clarity",
  "cosmos_gravity",
  "deep_space",
+ "gravity_utils",
  "modelator",
  "serde",
  "serde_json",

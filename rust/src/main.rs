@@ -3,12 +3,13 @@ mod utils;
 use crate::utils::*;
 use anyhow::Result;
 use async_std::task::block_on;
-use clarity::Address as EthAddress;
-use cosmos_gravity::send::send_to_eth;
+use clarity::{Address as EthAddress, Uint256};
+use cosmos_gravity::send::{send_ethereum_claims, send_to_eth};
 use cosmos_gravity::utils::wait_for_cosmos_online;
 use deep_space::coin::Coin;
 use deep_space::Address as CosmosAddress;
 use deep_space::Contact as DeepSpaceContact;
+use gravity_utils::types::Erc20DeployedEvent as GravityERC20DeployedEvent;
 use modelator::StepRunner;
 use serde::{Deserialize, Serialize};
 use std::fmt;
@@ -30,12 +31,18 @@ struct Step {
 enum Action {
     Init,
     SendToEthereum(SendToEthereum),
+    Erc20DeployedEvent(Erc20DeployedEvent),
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 struct SendToEthereum {
     validator: usize,
     sendAmount: usize,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+struct Erc20DeployedEvent {
+    eventNonce: usize,
 }
 
 #[derive(Clone)]
@@ -103,6 +110,43 @@ impl StepRunner<Step> for TestRunner {
 
                 Ok(())
             }
+            Action::Erc20DeployedEvent(action) => {
+                let denom: String = "footoken".into();
+                let erc20_address =
+                    EthAddress::parse_and_validate("0x2b591e99afE9f32eAA6214f7B7629768c40Eeb39")
+                        .unwrap();
+
+                for keys in self.keys.clone() {
+                    let pk = keys.validator_key;
+                    let addr = pk.clone().to_address(&self.contact.get_prefix()).unwrap();
+                    dbg!(addr);
+
+                    dbg!(block_on(send_ethereum_claims(
+                        &self.contact,
+                        pk,
+                        vec![],
+                        vec![],
+                        vec![GravityERC20DeployedEvent {
+                            cosmos_denom: denom.clone(),
+                            block_height: 1u64.into(),
+                            decimals: 0,
+                            erc20_address,
+                            event_nonce: action.eventNonce as u64,
+                            name: denom.clone(),
+                            symbol: "".into(),
+                        }],
+                        vec![],
+                        vec![],
+                        Coin {
+                            denom: denom.clone(),
+                            amount: 3u64.into(),
+                        },
+                    ))
+                    .unwrap());
+                }
+
+                Ok(())
+            }
         }
     }
 }
@@ -121,18 +165,12 @@ fn mbt_test() {
 
     let keys = get_keys();
 
-    for key in keys.clone() {
-        let pk = key.validator_key;
-        let addr = pk.to_address(&contact.get_prefix()).unwrap();
-        dbg!(addr);
-    }
-
     let tla_tests_file = "../tla/GravityMBTTests.tla";
     let tla_config_file = "../tla/GravityMBTTests.cfg";
 
     let runtime = modelator::ModelatorRuntime::default();
     let mut system = TestRunner { contact, keys };
-    runtime
+    dbg!(runtime
         .run_tla_steps(tla_tests_file, tla_config_file, &mut system)
-        .unwrap();
+        .unwrap());
 }

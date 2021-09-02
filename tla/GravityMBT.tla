@@ -20,25 +20,31 @@ CONSTANTS
 VARIABLES
     (* @type: [
         actionType: Str,
-        SendToEthereum: [ flag: Int, validator: Int, sendAmount: Int ]
+        validator: Int,
+        sendAmount: Int,
+        eventNonce: Int,
     ]*)
     action,
     \* @type: Bool
-    erc20Deployed
+    erc20Deployed,
+    \* @type: Int
+    eventNonce
 
 Init ==
     /\  action = [ actionType |-> "Init" ]
     /\  erc20Deployed = FALSE
+    /\  eventNonce = 1
 
 SendToEthereum ==
     /\  erc20Deployed = TRUE
     /\  \E v \in validators:
-            action' = [ actionType |-> "SendToEthereum", SendToEthereum |-> [ validator |-> v, sendAmount |-> 1 ] ]
-    /\  UNCHANGED <<erc20Deployed>>
+            action' = [ actionType |-> "SendToEthereum", validator |-> v, sendAmount |-> 1 ]
+    /\  UNCHANGED <<erc20Deployed, eventNonce>>
 
 DeployERC20 ==
+    /\  eventNonce' = eventNonce + 1
     /\  erc20Deployed' = TRUE
-    /\  action' = [  actionType |-> "Erc20DeployedEvent" ]
+    /\  action' = [  actionType |-> "Erc20DeployedEvent", eventNonce |-> eventNonce ]
 
 Next ==
     \/  SendToEthereum
